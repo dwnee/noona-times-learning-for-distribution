@@ -20,7 +20,10 @@ let mode = "tab-all"
 let newsList = [];
 let filterList = [];
 const menus = document.querySelectorAll(".menus button");
+const sideMenus = document.querySelectorAll(".side-menu-list button"); 
 menus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)));
+sideMenus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)));
+
 
 const getLatestNews = async ()=>{
   const url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?page=1&pageSize=20`);
@@ -50,7 +53,7 @@ const render=()=>{
             <img
               class="news-img-size"
               src="${news.urlToImage || "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"}"
-              alt="News Image"
+              alt="News Image" onerror="handleImageError(this)"
             />
           </div>
           <div class="col-lg-8">
@@ -88,6 +91,12 @@ const openNav = () => {
 };
 const closeNav = () => {
   document.getElementById("mySidenav").style.width = "0"
+}
+
+function handleImageError(image) {
+  image.onerror = null; // 무한 루프를 방지하기 위해 onerror 핸들러 제거
+  image.src = 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg'; // 대체 이미지 URL
+  console.log('Image not found. Displaying placeholder image.');
 }
 
 // function render(){
