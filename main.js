@@ -23,7 +23,7 @@ const menus = document.querySelectorAll(".menus button");
 menus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)));
 
 const getLatestNews = async ()=>{
-  const url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?country=us&apiKey=${API_KEY}`);
+  const url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?page=1&pageSize=20`);
   console.log(url);
   const response = await fetch(url);
   const data = await response.json();
@@ -36,7 +36,7 @@ const getLatestNews = async ()=>{
 const getNewsByCategory= async (event)=>{
   const category = event.target.textContent.toLowerCase();
   console.log("click category button", category)
-  const url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?country=us&category=${category}&apiKey=${API_KEY}`);
+  const url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?category=${category}`);
   const response = await fetch(url);
   const data = await response.json();
   console.log("Dddd", data);
