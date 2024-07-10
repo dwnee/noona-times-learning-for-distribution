@@ -4,7 +4,7 @@ let newsList = [];
 let filterList = [];
 const menus = document.querySelectorAll(".menus button");
 menus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)));
-let url = new URL(`http://times-node-env.eba-appvq3ef.ap-northeast-2.elasticbeanstalk.com/top-headlines?page=1&pageSize=20`);
+let url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?page=1&pageSize=20`);
 
 
 const getNews = async() =>{
@@ -16,7 +16,7 @@ const getNews = async() =>{
 
 const getLatestNews = async() => {
   url = new URL(
-    `http://times-node-env.eba-appvq3ef.ap-northeast-2.elasticbeanstalk.com/top-headlines?page=1&pageSize=20`
+    `https://noona-times-2024july.netlify.app/top-headlines?page=1&pageSize=20`
   );
   getNews();
 }
@@ -24,14 +24,14 @@ const getLatestNews = async() => {
 const getNewsByCategory= async (event)=>{
   const category = event.target.textContent.toLowerCase();
   console.log("click category button", category)
-  url = new URL(`http://times-node-env.eba-appvq3ef.ap-northeast-2.elasticbeanstalk.com/top-headlines?category=${category}`);
+  url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?category=${category}`);
   getNews();
   console.log("Dddd", data);
 }
 
 const searchNews = async() => {
   const inputValue = document.getElementById('search-input').value;
-  url = new URL(`http://times-node-env.eba-appvq3ef.ap-northeast-2.elasticbeanstalk.com/top-headlines?q=${inputValue}`);
+  url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?q=${inputValue}`);
   getNews();
 }
 
