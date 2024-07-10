@@ -1,59 +1,48 @@
-// const API_KEY = `b3890c85e6f94350bca0576090671f11`;
-// let keyword = '';
-// let news = [];
-// const getLatestNews = async ()=>{
-//   const url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?page=1&pageSize=20`);
-//   console.log(url);
-//   const response = await fetch(url);
-//   const data = await response.json();
-//   let news = data.articles;
-//   console.log("Rrrr", response);
-//   console.log("dddd", data);
-//   console.log("news", news);
-// }
-// getLatestNews();
-
-
-// const API_KEY = `b3890c85e6f94350bca0576090671f11`;
-// let news = [];
+const API_KEY = `b3890c85e6f94350bca0576090671f11`;
 let mode = "tab-all"
 let newsList = [];
 let filterList = [];
 const menus = document.querySelectorAll(".menus button");
-const sideMenus = document.querySelectorAll(".side-menu-list button"); 
 menus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)));
-sideMenus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)));
+let url = new URL(`http://times-node-env.eba-appvq3ef.ap-northeast-2.elasticbeanstalk.com/top-headlines?page=1&pageSize=20`);
 
 
-const getLatestNews = async ()=>{
-  const url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?page=1&pageSize=20`);
-  console.log(url);
+const getNews = async() =>{
   const response = await fetch(url);
   const data = await response.json();
   newsList = data.articles;
-  console.log("Rrrr", response);
-  console.log("dddd", data);
-  console.log("news", newsList);
   render();
 }
+
+const getLatestNews = async() => {
+  url = new URL(
+    `http://times-node-env.eba-appvq3ef.ap-northeast-2.elasticbeanstalk.com/top-headlines?page=1&pageSize=20`
+  );
+  getNews();
+}
+
 const getNewsByCategory= async (event)=>{
   const category = event.target.textContent.toLowerCase();
   console.log("click category button", category)
-  const url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?category=${category}`);
-  const response = await fetch(url);
-  const data = await response.json();
+  url = new URL(`http://times-node-env.eba-appvq3ef.ap-northeast-2.elasticbeanstalk.com/top-headlines?category=${category}`);
+  getNews();
   console.log("Dddd", data);
-  newsList = data.articles;
-  render();
 }
+
+const searchNews = async() => {
+  const inputValue = document.getElementById('search-input').value;
+  url = new URL(`http://times-node-env.eba-appvq3ef.ap-northeast-2.elasticbeanstalk.com/top-headlines?q=${inputValue}`);
+  getNews();
+}
+
 const render=()=>{
   const newsHTML = newsList.map(news=>`
       <div class="row news">
           <div class="col-lg-4 img-wrap">
             <img
               class="news-img-size"
-              src="${news.urlToImage || "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg"}"
-              alt="News Image" onerror="handleImageError(this)"
+              src="${news.urlToImage ? (news.urlToImage.endsWith('/') ? news.urlToImage.slice(0, -1) : news.urlToImage) : 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg'}"
+              alt="News Image" onerror="this.onerror=null; this.src='https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg';"
             />
           </div>
           <div class="col-lg-8">
@@ -71,9 +60,9 @@ const render=()=>{
   document.getElementById("news-section").innerHTML=newsHTML;
 }
 
-
 getLatestNews();
 
+/*  */
 const openSearchBox = () => {
   let inputArea = document.getElementById("input-area");
   if(inputArea.style.display === "inline"){
@@ -85,52 +74,10 @@ const openSearchBox = () => {
   }
 }
 
-
+/* 모바일 메뉴 햄버거 버튼 오픈 클로즈 */
 const openNav = () => {
   document.getElementById("mySidenav").style.width = "250px";
 };
 const closeNav = () => {
   document.getElementById("mySidenav").style.width = "0"
 }
-
-function handleImageError(image) {
-  image.onerror = null; // 무한 루프를 방지하기 위해 onerror 핸들러 제거
-  image.src = 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg'; // 대체 이미지 URL
-  console.log('Image not found. Displaying placeholder image.');
-}
-
-// function render(){
-//   // let list=[];
-//   let list=news;
-//   let resultHTML = '';
-//   if (mode === "tab-all"){
-//     // list = newsList;
-//   } else {
-//     // list = filterList;
-//   }
-//   console.log("list" , list)
-//   for(let i=0; i<list.length; i++){
-//     console.log("for in")
-//     resultHTML += 
-//     `<div class="row news">
-//     <div class="col-lg-4 img-wrap">
-//       <img
-//         class="news-img-size"
-//         src="${list[i].urlToImage}"
-//         alt=""
-//       />
-//     </div>
-//     <div class="col-lg-8">
-//       <h2>${list[i].title}</h2>
-//       <p>
-//         ${list[i].description}
-//       </p>
-//       <div>${list[i].source.name} ${list[i].publishedAt}</div>
-//     </div>
-//   </div>;`
-//   }
-//   document.getElementById("news-section").innerHTML = resultHTML;
-// }
-// render();
-
-
