@@ -26,7 +26,6 @@ const getNewsByCategory= async (event)=>{
   console.log("click category button", category)
   url = new URL(`https://noona-times-2024july.netlify.app/top-headlines?category=${category}`);
   getNews();
-  console.log("Dddd", data);
 }
 
 const searchNews = async() => {
