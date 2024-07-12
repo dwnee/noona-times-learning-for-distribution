@@ -1,4 +1,5 @@
-const API_KEY = `b3890c85e6f94350bca0576090671f11`;
+// const API_KEY = `b3890c85e6f94350bca0576090671f11`;
+// const API_KEY = `b3890c85e6f94350bca0576090671f1`; // error test
 let mode = "tab-all"
 let newsList = [];
 let filterList = [];
@@ -6,19 +7,31 @@ const menus = document.querySelectorAll(".menus button");
 menus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)));
 const mobileMenus = document.querySelectorAll(".side-menu-list button");
 mobileMenus.forEach(menu=>menu.addEventListener("click",(event)=>getNewsByCategory(event)));
-let url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?page=1&pageSize=20`);
+let url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?country=kr`);
 
 
 const getNews = async() =>{
-  const response = await fetch(url);
-  const data = await response.json();
-  newsList = data.articles;
-  render();
+  try{
+    const response = await fetch(url);
+    const data = await response.json();
+    if(response.status===200){
+      if(data.articles.length===0){
+        throw new Error("No result for this research");
+      }
+      newsList = data.articles;
+      render();
+    }else{
+      throw new Error(data.message)
+    }
+  } catch(error){
+    // console.log("error message", error.message)
+    errorRender(error.message);
+  }
 }
 
 const getLatestNews = async() => {
   url = new URL(
-    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?page=1&pageSize=20`
+    `https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?`
   );
   getNews();
 }
@@ -28,7 +41,6 @@ const getNewsByCategory= async (event)=>{
   console.log("click category button", category)
   url = new URL(`https://noona-times-be-5ca9402f90d9.herokuapp.com/top-headlines?category=${category}`);
   getNews();
-  // console.log("Dddd", data);
 }
 
 const searchNews = async() => {
@@ -62,9 +74,20 @@ const render=()=>{
   document.getElementById("news-section").innerHTML=newsHTML;
 }
 
+const errorRender = (errorMessage)=>{
+  const errorHTML = `
+    <div class="alert alert-danger" role="alert">
+      ${errorMessage}
+    </div>
+  `;
+  document.getElementById("news-section").innerHTML = errorHTML;
+}
+
+
+
 getLatestNews();
 
-/*  */
+/* search box open */
 const openSearchBox = () => {
   let inputArea = document.getElementById("input-area");
   if(inputArea.style.display === "inline"){
@@ -75,8 +98,7 @@ const openSearchBox = () => {
     console.log("else inputarea")
   }
 }
-
-/* 모바일 메뉴 햄버거 버튼 오픈 클로즈 */
+/* mobile hamburger button category menu open close */
 const openNav = () => {
   document.getElementById("mySidenav").style.width = "250px";
 };
