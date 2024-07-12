@@ -83,7 +83,10 @@ const errorRender = (errorMessage)=>{
   document.getElementById("news-section").innerHTML = errorHTML;
 }
 
-
+document.getElementById('search-input').addEventListener('click', function() {
+  console.log(this.value);
+  this.value = "";
+});
 
 getLatestNews();
 
