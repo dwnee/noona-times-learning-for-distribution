@@ -154,17 +154,18 @@ const paginationRender=()=>{
       }
       paginationHTML += `
         <li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link" >Next</a></li>
-        <li class="page-item" onclick="moveToPage(${totalPages})">
-          <a class="page-link" aria-label="Next">
-            <span aria-hidden="true">${pageGroup !== Math.ceil(totalPages / groupSize) ? `
+        
+          
+            <span aria-hidden="true">
+              ${pageGroup !== Math.ceil(totalPages / groupSize) ? `
               <li class="page-item" onclick="moveToPage(${totalPages})">
                 <a class="page-link" aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>` : ''}
             </span>
-          </a>
-        </li>
+          
+        
       `
     } else {
       if(page == totalPages){
@@ -184,8 +185,7 @@ const paginationRender=()=>{
           }
           paginationHTML += `
             <li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link" >Next</a></li>
-            <li class="page-item" onclick="moveToPage(${totalPages})">
-              <a class="page-link" aria-label="Next">
+            
                 <span aria-hidden="true">${pageGroup !== Math.ceil(totalPages / groupSize) ? `
                   <li class="page-item" onclick="moveToPage(${totalPages})">
                     <a class="page-link" aria-label="Next">
@@ -193,11 +193,8 @@ const paginationRender=()=>{
                     </a>
                   </li>` : ''}
                 </span>
-              </a>
-            </li>
           `
       }
-
     }
   } else if(page == totalPages) {
     console.log("page == totalPages")
@@ -212,7 +209,7 @@ const paginationRender=()=>{
     paginationHTML += `<li class="page-item ${i===page ? "active" : ""}" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`
   }
   } else {
-    if(page > lastPage-groupSize) {
+    if(page > totalPages-groupSize) {
       paginationHTML += `
     <li class="page-item" onclick="moveToPage(1)">
       <a class="page-link" aria-label="Previous">
